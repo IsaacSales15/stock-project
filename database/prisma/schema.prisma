@@ -7,8 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  name  String
-  email String  @unique
+model Inventory {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  products  Product[]
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String
+  products Product[]
+  createdAt DateTime @default(now())
+  updateAt DateTime 
+}
+
+model Product {
+  id           Int        @id @default(autoincrement())
+  name         String
+  quantity     Int
+  inventoryId  Int
+  inventory    Inventory  @relation(fields: [inventoryId], references: [id])
+  categoryId   Int? 
+  category     Category?  @relation(fields: [categoryId], references: [id])
 }
