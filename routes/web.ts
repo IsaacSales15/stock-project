@@ -1,13 +1,12 @@
-import { Router } from 'express';
-import { InventoryController } from '../app/controllers/http';
+import { Express } from "express";
+import inventory_routes from "./inventory_routes";
+import product_routes from "./products_routes";
 
-const router = Router();
-const inventoryController = new InventoryController();
+export default function routes(app: Express){
+    app.get('/', (req, res) => {
+        res.render('inventory/index'); 
+    });
 
-router.get('/', inventoryController.index);
-router.get('/inventory', inventoryController.index);
-router.post('/inventory', inventoryController.store);
-router.delete('/inventory', inventoryController.delete);
-router.put('/inventory', inventoryController.update);
-
-export default router;
+    app.use('/inventory', inventory_routes);
+    app.use('/product', product_routes);
+}

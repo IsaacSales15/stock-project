@@ -13,6 +13,17 @@ export class ProductController {
         res.redirect("/product");
     }
 
+    async show(req: Request, res: Response) {
+        const id = Number(req.params.id);
+        const product = await Product.find(id);
+        res.render("product/show", { product });
+    }
+
+    async all(req: Request, res: Response) {
+        const products = await Product.all();
+        res.render("product/index", { products });
+    }
+
     async delete(req: Request, res: Response) {
         const id = Number(req.body.id);
         await Product.delete(id);

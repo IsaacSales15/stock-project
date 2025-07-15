@@ -17,7 +17,7 @@ app.set('views', path.resolve(__dirname, '..', 'resources', 'views'));
 
 app.use(express.static(path.resolve(__dirname, '..', 'public')))
 
-app.use('/', routes);
+routes(app);
 
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);

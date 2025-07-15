@@ -13,6 +13,12 @@ export class InventoryController {
     res.redirect("/inventory");
   }
 
+  async show(req: Request, res: Response) {
+    const id = Number(req.params.id);
+    const inventory = await Inventory.find(id);
+    res.render("inventory/show", { inventory });
+  }
+
   async delete(req: Request, res: Response) {
     const id = Number(req.body.id);
     await Inventory.delete(id);
