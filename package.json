@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only start/server.ts",
+    "build": "tsc",
+    "start": "node dist/start/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,15 +25,17 @@
     "@prisma/client": "^6.11.1",
     "express": "^5.1.0",
     "express-handlebars": "^8.0.2",
+    "method-override": "^3.0.0",
     "prisma": "^6.11.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
+    "@types/method-override": "^3.0.0",
     "@types/node": "^24.0.10",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"
   },
   "prisma": {
-  "schema": "./database/prisma/schema.prisma"
-}
+    "schema": "./database/prisma/schema.prisma"
+  }
 }
