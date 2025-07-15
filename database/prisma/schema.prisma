@@ -8,26 +8,29 @@ datasource db {
 }
 
 model Inventory {
-  id        Int       @id @default(autoincrement())
-  name      String
-  createdAt DateTime  @default(now())
-  products  Product[]
+  id         Int        @id @default(autoincrement())
+  name       String
+  createdAt  DateTime   @default(now())
+  categories Category[]
+  products   Product[]
 }
 
 model Category {
-  id       Int       @id @default(autoincrement())
-  name     String
-  products Product[]
-  createdAt DateTime @default(now())
-  updateAt DateTime 
+  id          Int       @id @default(autoincrement())
+  name        String
+  inventoryId Int
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updateAt    DateTime
+  Inventory   Inventory @relation(fields: [inventoryId], references: [id])
 }
 
 model Product {
-  id           Int        @id @default(autoincrement())
-  name         String
-  quantity     Int
-  inventoryId  Int
-  inventory    Inventory  @relation(fields: [inventoryId], references: [id])
-  categoryId   Int? 
-  category     Category?  @relation(fields: [categoryId], references: [id])
+  id          Int       @id @default(autoincrement())
+  name        String
+  quantity    Int
+  inventoryId Int
+  inventory   Inventory @relation(fields: [inventoryId], references: [id])
+  categoryId  Int?
+  category    Category? @relation(fields: [categoryId], references: [id])
 }

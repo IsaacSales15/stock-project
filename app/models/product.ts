@@ -1,32 +1,33 @@
 import { prisma } from "../utils/prisma";
 
 export class Product {
-    static async all() { 
-        const product = prisma.product
-        return await product.findMany() 
-    }
+  /**
+   * A repository for product operations.
+   * @remarks
+   * This property returns a reference to the underlying Prisma `product` model.
+   * @returns A reference to the `product` model.
+   */
+  private static get repo() {
+    return prisma.product;
+  }
 
-    static async find(id: number) { 
-        const product = prisma.product
-        return await product.findUnique({ where: { id } 
-        }) 
-    }
+  static async all() {
+    return await this.repo.findMany();
+  }
 
-    static async create(name: string, quantity: number, inventoryId: number) { 
-        const product = prisma.product
-        return await product.create({ data: { name, quantity, inventoryId } 
-    }) 
-}
+  static async find(id: number) {
+    return await this.repo.findUnique({ where: { id } });
+  }
 
-    static async delete(id: number) { 
-        const product = prisma.product
-        return await product.delete({ where: { id } 
-        }) 
-    }
+  static async create(name: string, quantity: number, inventoryId: number) {
+    return await this.repo.create({ data: { name, quantity, inventoryId } });
+  }
 
-    static async update(id: number, name: string) { 
-        const product = prisma.product
-        return await product.update({ where: { id }, data: { name } 
-        }) 
-    }
+  static async delete(id: number) {
+    return await this.repo.delete({ where: { id } });
+  }
+
+  static async update(id: number, name: string) {
+    return await this.repo.update({ where: { id }, data: { name } });
+  }
 }
