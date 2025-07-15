@@ -9,7 +9,7 @@ export class ProductController {
 
     async store(req: Request, res: Response) {
         const { name, quantity, inventoryId } = req.body;
-        await Product.create(name, quantity, inventoryId);
+        await Product.create(name, quantity, Number(inventoryId));
         res.redirect("/product");
     }
 
@@ -32,7 +32,7 @@ export class ProductController {
 
     async update(req: Request, res: Response) {
         const { id, name } = req.body;
-        await Product.update(id, name);
+        await Product.update(Number(id), name);
         res.redirect("/product");
     }
 

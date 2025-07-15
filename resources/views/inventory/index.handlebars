@@ -3,7 +3,13 @@
 <!-- Formulário de criação -->
 <form action="/inventory" method="POST" class="mb-4">
   <div class="input-group">
-    <input type="text" name="name" placeholder="Nome do inventário" class="form-control" required>
+    <input
+      type="text"
+      name="name"
+      placeholder="Nome do inventário"
+      class="form-control"
+      required
+    />
     <button type="submit" class="btn btn-primary">Adicionar</button>
   </div>
 </form>
@@ -25,24 +31,37 @@
         <td>
           <!-- Formulário de edição -->
           <form action="/inventory?_method=PUT" method="POST" class="d-inline">
-            <input type="hidden" name="id" value="{{this.id}}">
-            <input type="text" name="name" value="{{this.name}}" class="form-control d-inline w-50" required>
+            <input type="hidden" name="id" value="{{this.id}}" />
+            <input
+              type="text"
+              name="name"
+              value="{{this.name}}"
+              class="form-control d-inline w-50"
+              required
+            />
             <button class="btn btn-warning btn-sm">Atualizar</button>
           </form>
 
           <!-- Formulário de exclusão -->
-          <form action="/inventory?_method=DELETE" method="POST" class="d-inline">
-            <input type="hidden" name="id" value="{{this.id}}">
+          <form
+            action="/inventory?_method=DELETE"
+            method="POST"
+            class="d-inline"
+          >
+            <input type="hidden" name="id" value="{{this.id}}" />
             <button class="btn btn-danger btn-sm">Excluir</button>
           </form>
         </td>
 
         <!--  Exibição de produtos -->
         <td>
-          <a href="/product/inventory/{{this.id}}" class="text-decoration-none">
-              {{this.name}}
+          <a
+            href="/category/fromInventory/{{this.id}}"
+            class="btn btn-outline-primary btn-sm"
+          >
+            Ver categorias
           </a>
-      </td>
+        </td>
 
       </tr>
     {{/each}}

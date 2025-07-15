@@ -1,0 +1,46 @@
+<h1 class="mb-4">Todas as Categorias</h1>
+
+<a href="/inventory" class="btn btn-secondary mb-3">← Voltar aos Inventários</a>
+
+<!-- Formulário para adicionar nova categoria -->
+<form action="/category" method="POST" class="mb-4">
+  <div class="input-group">
+    <input type="text" name="name" placeholder="Nome da categoria" class="form-control" required>
+    <button type="submit" class="btn btn-primary">Adicionar</button>
+  </div>
+</form>
+
+<!-- Lista de categorias -->
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each categories}}
+      <tr>
+        <td>{{this.id}}</td>
+        <td>
+          <a href="/category/{{this.id}}" class="text-decoration-none">{{this.name}}</a>
+        </td>
+        <td>
+          <!-- Atualizar -->
+          <form action="/category?_method=PUT" method="POST" class="d-inline">
+            <input type="hidden" name="id" value="{{this.id}}">
+            <input type="text" name="name" value="{{this.name}}" class="form-control d-inline w-50" required>
+            <button class="btn btn-warning btn-sm">Atualizar</button>
+          </form>
+
+          <!-- Excluir -->
+          <form action="/category?_method=DELETE" method="POST" class="d-inline">
+            <input type="hidden" name="id" value="{{this.id}}">
+            <button class="btn btn-danger btn-sm">Excluir</button>
+          </form>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

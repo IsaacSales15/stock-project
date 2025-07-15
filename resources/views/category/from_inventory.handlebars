@@ -1,0 +1,37 @@
+<h1 class="mb-4">Categorias do Inventário #{{inventoryId}}</h1>
+
+<a href="/inventory" class="btn btn-secondary mb-3">← Voltar aos Inventários</a>
+
+<!-- Formulário para adicionar nova categoria -->
+<form action="/category" method="POST" class="mb-4">
+  <input type="hidden" name="inventory" value="{{inventoryId}}">
+  <div class="input-group">
+    <input type="text" name="name" placeholder="Nome da categoria" class="form-control" required>
+    <button type="submit" class="btn btn-primary">Adicionar Categoria</button>
+  </div>
+</form>
+
+<!-- Lista de categorias -->
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each categories}}
+      <tr>
+        <td>{{this.id}}</td>
+        <td>{{this.name}}</td>
+        <td>
+          <!-- Botão para ver produtos dessa categoria -->
+          <a href="/product/category/{{this.id}}" class="btn btn-outline-info btn-sm">
+            Ver produtos
+          </a>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

@@ -15,13 +15,13 @@ export class CategoryController {
 
   async store(req: Request, res: Response) {
     const { name, inventory } = req.body;
-    await Category.create(name, inventory);
+    await Category.create(name, Number(inventory));
     res.redirect("/category");
   }
 
   async update(req: Request, res: Response) {
     const { id, name } = req.body;
-    await Category.update(id, name);
+    await Category.update(Number(id), name);
     res.redirect("/category");
   }
 
