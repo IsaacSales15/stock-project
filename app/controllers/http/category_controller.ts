@@ -1,12 +1,13 @@
-import { Category } from "../../models/category";
 import { Request, Response } from "express";
+import { Category } from "../../models/category";
+import { RequestWithValidated } from "../../middlewares/validator";
 import {
-  CategoryDeleteSchema,
-  CategoryFromInventorySchema,
-  CategoryShowSchema,
   CategoryStoreSchema,
   CategoryUpdateSchema,
+  CategoryDeleteSchema,
+  CategoryFromInventorySchema,
 } from "../../validators/category";
+import { z } from "zod";
 
 export class CategoryController {
   async index(req: Request, res: Response) {
@@ -15,26 +16,35 @@ export class CategoryController {
   }
 
   async show(req: Request, res: Response) {
-    const data = CategoryShowSchema.parse(Number(req.params.id));
-    const category = await Category.find(data.id);
+    const id = Number(req.params.id);
+    const category = await Category.find(id);
     res.render("category/show", { category });
   }
 
-  async store(req: Request, res: Response) {
-    const data = CategoryStoreSchema.parse(req.body);
-    await Category.create(data.name, Number(data.inventory));
+  async store(
+    req: RequestWithValidated<z.infer<typeof CategoryStoreSchema>>,
+    res: Response
+  ) {
+    const { name, inventory } = req.validatedData;
+    await Category.create(name, inventory);
     res.redirect("/category");
   }
 
-  async update(req: Request, res: Response) {
-    const data = CategoryUpdateSchema.parse(req.body);
-    await Category.update(Number(data.id), data.name);
+  async update(
+    req: RequestWithValidated<z.infer<typeof CategoryUpdateSchema>>,
+    res: Response
+  ) {
+    const { id, name } = req.validatedData;
+    await Category.update(id, name);
     res.redirect("/category");
   }
 
-  async delete(req: Request, res: Response) {
-    const data = CategoryDeleteSchema.parse(req.body);
-    await Category.delete(data.id);
+  async delete(
+    req: RequestWithValidated<z.infer<typeof CategoryDeleteSchema>>,
+    res: Response
+  ) {
+    const { id } = req.validatedData;
+    await Category.delete(id);
     res.redirect("/category");
   }
 
@@ -43,9 +53,12 @@ export class CategoryController {
     res.render("category/index", { categories });
   }
 
-  async fromInventory(req: Request, res: Response) {
-    const data = CategoryFromInventorySchema.parse(req.body);
-    const categories = await Category.findByInventory(data.inventoryId as number);
-    res.render("category/from_inventory", { categories, data: data.inventoryId });
+  async fromInventory(
+    req: RequestWithValidated<z.infer<typeof CategoryFromInventorySchema>>,
+    res: Response
+  ) {
+    const { inventoryId } = req.validatedData;
+    const categories = await Category.findByInventory(inventoryId);
+    res.render("category/from_inventory", { categories, inventoryId });
   }
 }

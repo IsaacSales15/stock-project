@@ -1,19 +1,59 @@
-import { CategoryController } from "../app/controllers/http";
 import { Router } from "express";
+import { CategoryController } from "../app/controllers/http";
+import { validate } from "../app/middlewares/validator";
+import {
+  CategoryStoreSchema,
+  CategoryUpdateSchema,
+  CategoryDeleteSchema,
+  CategoryFromInventorySchema,
+} from "../app/validators/category";
+import { RequestWithValidated } from "../app/middlewares/validator";
+import { z } from "zod";
 
 const router = Router();
-const categoryController = new CategoryController();
+const controller = new CategoryController();
 
-router.get('/', categoryController.index);
-router.get('/:id', categoryController.show);
-router.post('/', categoryController.store);
-router.get('/all', categoryController.all);            
-router.delete('/', categoryController.delete);          
-router.put('/', categoryController.update);
+router.get("/", controller.index);
+router.get("/all", controller.all);
+router.get("/:id", controller.show);
+router.get(
+  "/fromInventory/:inventoryId",
+  validate(CategoryFromInventorySchema),
+  (req, res) =>
+    controller.fromInventory(
+      req as RequestWithValidated<z.infer<typeof CategoryFromInventorySchema>>,
+      res
+    )
+);
 
-router.get('/fromInventory/:inventoryId', (req, res, next) => {
-  categoryController.fromInventory(req, res);
-});
+router.post(
+  "/",
+  validate(CategoryStoreSchema),
+  (req, res) =>
+    controller.store(
+      req as RequestWithValidated<z.infer<typeof CategoryStoreSchema>>,
+      res
+    )
+);
 
+router.put(
+  "/",
+  validate(CategoryUpdateSchema),
+  (req, res) =>
+    controller.update(
+      req as RequestWithValidated<z.infer<typeof CategoryUpdateSchema>>,
+      res
+    )
+);
+
+router.delete(
+  "/",
+  validate(CategoryDeleteSchema),
+  (req, res) =>
+    controller.delete(
+      req as RequestWithValidated<z.infer<typeof CategoryDeleteSchema>>,
+      res
+    )
+);
 
 export default router;
