@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Inventory } from "../../models/inventory";
+import { InventoryUpdateSchema, InventoryDeleteSchema, InventoryStoreSchema } from "../../validators/inventory";
 
 export class InventoryController {
   async index(req: Request, res: Response) {
@@ -8,8 +9,8 @@ export class InventoryController {
   }
 
   async store(req: Request, res: Response) {
-    const { name, description } = req.body;
-    await Inventory.create(name);
+    const data = InventoryStoreSchema.parse(req.body);
+    await Inventory.create(data.name);
     res.redirect("/inventory");
   }
 
@@ -20,14 +21,14 @@ export class InventoryController {
   }
 
   async delete(req: Request, res: Response) {
-    const id = Number(req.body.id);
-    await Inventory.delete(id);
+    const data = InventoryDeleteSchema.parse(Number(req.body.id));
+    await Inventory.delete(data.id);
     res.redirect("/inventory");
   }
 
   async update(req: Request, res: Response) {
-    const { id, name } = req.body;
-    await Inventory.update(id, name);
+    const data = InventoryUpdateSchema.parse(req.body);
+    await Inventory.update(data.id, data.name);
     res.redirect("/inventory");
   }
 }

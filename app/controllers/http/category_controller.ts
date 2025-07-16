@@ -1,5 +1,12 @@
 import { Category } from "../../models/category";
 import { Request, Response } from "express";
+import {
+  CategoryDeleteSchema,
+  CategoryFromInventorySchema,
+  CategoryShowSchema,
+  CategoryStoreSchema,
+  CategoryUpdateSchema,
+} from "../../validators/category";
 
 export class CategoryController {
   async index(req: Request, res: Response) {
@@ -8,26 +15,26 @@ export class CategoryController {
   }
 
   async show(req: Request, res: Response) {
-    const id = Number(req.params.id);
-    const category = await Category.find(id);
+    const data = CategoryShowSchema.parse(Number(req.params.id));
+    const category = await Category.find(data.id);
     res.render("category/show", { category });
   }
 
   async store(req: Request, res: Response) {
-    const { name, inventory } = req.body;
-    await Category.create(name, Number(inventory));
+    const data = CategoryStoreSchema.parse(req.body);
+    await Category.create(data.name, Number(data.inventory));
     res.redirect("/category");
   }
 
   async update(req: Request, res: Response) {
-    const { id, name } = req.body;
-    await Category.update(Number(id), name);
+    const data = CategoryUpdateSchema.parse(req.body);
+    await Category.update(Number(data.id), data.name);
     res.redirect("/category");
   }
 
   async delete(req: Request, res: Response) {
-    const id = Number(req.body.id);
-    await Category.delete(id);
+    const data = CategoryDeleteSchema.parse(req.body);
+    await Category.delete(data.id);
     res.redirect("/category");
   }
 
@@ -37,10 +44,8 @@ export class CategoryController {
   }
 
   async fromInventory(req: Request, res: Response) {
-    const inventoryId = Number(req.params.inventoryId);
-    if (isNaN(inventoryId)) return res.status(400).send("ID inválido");
-
-    const categories = await Category.findByInventory(inventoryId);
-    res.render("category/from_inventory", { categories, inventoryId });
+    const data = CategoryFromInventorySchema.parse(req.body);
+    const categories = await Category.findByInventory(data.inventoryId as number);
+    res.render("category/from_inventory", { categories, data: data.inventoryId });
   }
 }

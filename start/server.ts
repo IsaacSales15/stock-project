@@ -6,10 +6,10 @@ import routes from '../routes/web';
 import methodOverride from 'method-override';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config()
 
-const app = express();
-const port = process.env.PORT ? Number(process.env.PORT) : 3000;;
+const app = express()
+const port = process.env.PORT
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
@@ -25,7 +25,7 @@ routes(app);
 
 // if no port is found, error 404 is returned (não me esquecer dessa budega)
 app.use((req, res) => {
-  res.status(404).render('error', {
+  res.status(404).render('error/error_handle', {
     status: 404,
     message: 'Página não encontrada',
   });

@@ -24,6 +24,6 @@ export class Inventory {
     return await this.repo.delete({ where: { id } });
   }
   static async update(id: number, name: string) {
-    return await this.repo.update({ where: { id }, data: { name } });
+    return await this.repo.update({ where: { id: Number(id) }, data: { name } });
   }
 }

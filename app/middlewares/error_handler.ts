@@ -12,6 +12,6 @@ export function errorHandlerMiddleware(
   if (req.headers.accept?.includes("application/json")) {
     res.status(statusCode).json({ error: message });
   } else {
-    res.status(statusCode).render("error", { message });
+    res.status(statusCode).render("error/error_handle", { message });
   }
 }
