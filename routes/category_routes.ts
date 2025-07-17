@@ -11,16 +11,16 @@ import { RequestWithValidated } from "../app/middlewares/validator";
 import { z } from "zod";
 
 const router = Router();
-const controller = new CategoryController();
+const categoryController = new CategoryController();
 
-router.get("/", controller.index);
-router.get("/all", controller.all);
-router.get("/:id", controller.show);
+router.get("/", categoryController.index);
+router.get("/all", categoryController.all);
+router.get("/:id", categoryController.show);
 router.get(
   "/fromInventory/:inventoryId",
-  validate(CategoryFromInventorySchema),
+  validate(CategoryFromInventorySchema, 'params'),
   (req, res) =>
-    controller.fromInventory(
+    categoryController.fromInventory(
       req as RequestWithValidated<z.infer<typeof CategoryFromInventorySchema>>,
       res
     )
@@ -28,9 +28,9 @@ router.get(
 
 router.post(
   "/",
-  validate(CategoryStoreSchema),
+  validate(CategoryStoreSchema, 'body'),
   (req, res) =>
-    controller.store(
+    categoryController.store(
       req as RequestWithValidated<z.infer<typeof CategoryStoreSchema>>,
       res
     )
@@ -38,9 +38,9 @@ router.post(
 
 router.put(
   "/",
-  validate(CategoryUpdateSchema),
+  validate(CategoryUpdateSchema, 'body'),
   (req, res) =>
-    controller.update(
+    categoryController.update(
       req as RequestWithValidated<z.infer<typeof CategoryUpdateSchema>>,
       res
     )
@@ -48,9 +48,9 @@ router.put(
 
 router.delete(
   "/",
-  validate(CategoryDeleteSchema),
+  validate(CategoryDeleteSchema, 'body'),
   (req, res) =>
-    controller.delete(
+    categoryController.delete(
       req as RequestWithValidated<z.infer<typeof CategoryDeleteSchema>>,
       res
     )

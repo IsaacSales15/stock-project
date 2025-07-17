@@ -9,6 +9,7 @@ export function errorHandlerMiddleware(
   const statusCode = err.statusCode || 500;
   const message = err.message || "Erro interno no servidor";
 
+  console.error(err);
   if (req.headers.accept?.includes("application/json")) {
     res.status(statusCode).json({ error: message });
   } else {

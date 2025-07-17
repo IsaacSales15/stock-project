@@ -1,6 +1,12 @@
 import { Request, Response } from "express";
 import { Inventory } from "../../models/inventory";
-import { InventoryUpdateSchema, InventoryDeleteSchema, InventoryStoreSchema } from "../../validators/inventory";
+import {
+  InventoryUpdateSchema,
+  InventoryDeleteSchema,
+  InventoryStoreSchema,
+} from "../../validators/inventory";
+import { z } from "zod";
+import { RequestWithValidated } from "../../middlewares/validator";
 
 export class InventoryController {
   async index(req: Request, res: Response) {
@@ -8,8 +14,11 @@ export class InventoryController {
     res.render("inventory/index", { inventories });
   }
 
-  async store(req: Request, res: Response) {
-    const data = InventoryStoreSchema.parse(req.body);
+  async store(
+    req: RequestWithValidated<z.infer<typeof InventoryStoreSchema>>,
+    res: Response
+  ) {
+    const data = req.validatedData;
     await Inventory.create(data.name);
     res.redirect("/inventory");
   }
@@ -20,15 +29,21 @@ export class InventoryController {
     res.render("inventory/show", { inventory });
   }
 
-  async delete(req: Request, res: Response) {
-    const data = InventoryDeleteSchema.parse(Number(req.body.id));
-    await Inventory.delete(data.id);
+  async delete(
+    req: RequestWithValidated<z.infer<typeof InventoryDeleteSchema>>,
+    res: Response
+  ) {
+    const id = req.validatedData.id;
+    await Inventory.delete(id);
     res.redirect("/inventory");
   }
 
-  async update(req: Request, res: Response) {
-    const data = InventoryUpdateSchema.parse(req.body);
-    await Inventory.update(data.id, data.name);
+  async update(
+    req: RequestWithValidated<z.infer<typeof InventoryUpdateSchema>>,
+    res: Response
+  ) {
+    const { id, name } = req.validatedData;
+    await Inventory.update(id, name);
     res.redirect("/inventory");
   }
 }
