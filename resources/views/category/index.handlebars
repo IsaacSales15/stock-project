@@ -2,20 +2,22 @@
 
 <a href="/inventory" class="btn btn-secondary mb-3">← Voltar aos Inventários</a>
 
-<!-- Formulário para adicionar nova categoria -->
-<form action="/category" method="POST" class="mb-4">
-  <input type="hidden" name="inventory" value="{{inventoryId}}" />
-  <div class="input-group">
-    <input
-      type="text"
-      name="name"
-      placeholder="Nome da categoria"
-      class="form-control"
-      required
-    />
-    <button type="submit" class="btn btn-primary">Adicionar</button>
-  </div>
-</form>
+<!-- Formulário para adicionar nova categoria (somente se inventoryId estiver definido) -->
+{{#if inventoryId}}
+  <form action="/category" method="POST" class="mb-4">
+    <input type="hidden" name="inventory" value="{{inventoryId}}" />
+    <div class="input-group">
+      <input
+        type="text"
+        name="name"
+        placeholder="Nome da categoria"
+        class="form-control"
+        required
+      />
+      <button type="submit" class="btn btn-primary">Adicionar</button>
+    </div>
+  </form>
+{{/if}}
 
 <!-- Lista de categorias -->
 <table class="table table-striped">

@@ -27,7 +27,9 @@ export class CategoryController {
   ) {
     const { name, inventory } = req.validatedData;
     await Category.create(name, inventory);
-    res.redirect("/category");
+    // Quero deixar registrado que passei 10 minutos procurando o erro, pra no final
+    // o erro ser que eu confundi um `` com um ''. Faz o L ai.
+    res.redirect(`/category/fromInventory/${inventory}`);
   }
 
   async update(
