@@ -2,7 +2,7 @@
 
 <a href="/inventory" class="btn btn-secondary mb-3">← Voltar aos Inventários</a>
 
-<!-- Formulário para adicionar nova categoria (somente se inventoryId estiver definido) -->
+<!-- Form to add new category (only if inventoryId is set) -->
 {{#if inventoryId}}
   <form action="/category" method="POST" class="mb-4">
     <input type="hidden" name="inventory" value="{{inventoryId}}" />
@@ -19,7 +19,7 @@
   </form>
 {{/if}}
 
-<!-- Lista de categorias -->
+<!-- Category List -->
 <table class="table table-striped">
   <thead>
     <tr>
@@ -39,7 +39,7 @@
           >{{this.name}}</a>
         </td>
         <td>
-          <!-- Atualizar -->
+          <!-- Update -->
           <form action="/category?_method=PUT" method="POST" class="d-inline">
             <input type="hidden" name="id" value="{{this.id}}" />
             <input
@@ -52,7 +52,7 @@
             <button class="btn btn-warning btn-sm">Atualizar</button>
           </form>
 
-          <!-- Excluir -->
+          <!-- Delete -->
           <form
             action="/category?_method=DELETE"
             method="POST"

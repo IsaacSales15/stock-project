@@ -1,5 +1,24 @@
 import { Request, Response, NextFunction } from "express";
 
+/**
+* Middleware function for handling errors in Express.
+*
+* @param {any} err - The error to be handled.
+* @param {Request} req - The Express Request object.
+* @param {Response} res - The Express Response object.
+* @param {NextFunction} next - The next middleware function in the Express chain.
+*
+* @remarks
+* If the error has a "statusCode" attribute, it will be used as the response status.
+* Otherwise, the status will be 500.
+*
+* If the error has a "message" attribute, it will be used as the response message.
+* Otherwise, the message will be "Internal server error."
+*
+* If the request's "Accept" header includes "application/json," the
+* response will be in JSON format. Otherwise, the response will be in
+* HTML format, rendering the "error/error_handle" view.
+*/
 export function errorHandlerMiddleware(
   err: any,
   req: Request,

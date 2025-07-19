@@ -2,7 +2,7 @@
 
 <a href="/inventory" class="btn btn-secondary mb-3">← Voltar aos Inventários</a>
 
-<!-- Formulário para adicionar nova categoria -->
+<!-- Form to add new category -->
 <form action="/category" method="POST" class="mb-4">
   <input type="hidden" name="inventory" value="{{inventoryId}}">
   <div class="input-group">
@@ -11,7 +11,7 @@
   </div>
 </form>
 
-<!-- Lista de categorias -->
+<!-- Category List -->
 <table class="table table-striped">
   <thead>
     <tr>
@@ -26,7 +26,7 @@
         <td>{{this.id}}</td>
         <td>{{this.name}}</td>
         <td>
-          <!-- Botão para ver produtos dessa categoria -->
+          <!-- Button to view products in this category -->
           <a href="/product/category/{{this.id}}" class="btn btn-outline-info btn-sm">
             Ver produtos
           </a>

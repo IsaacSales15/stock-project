@@ -11,7 +11,7 @@ model Inventory {
   id         Int        @id @default(autoincrement())
   name       String
   createdAt  DateTime   @default(now())
-  categories Category[]
+  categories Category[] 
   products   Product[]
 }
 
@@ -22,7 +22,7 @@ model Category {
   products    Product[]
   createdAt   DateTime  @default(now())
   updateAt    DateTime
-  Inventory   Inventory @relation(fields: [inventoryId], references: [id])
+  Inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
 }
 
 model Product {
@@ -30,7 +30,7 @@ model Product {
   name        String
   quantity    Int
   inventoryId Int
-  inventory   Inventory @relation(fields: [inventoryId], references: [id])
+  inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
   categoryId  Int?
-  category    Category? @relation(fields: [categoryId], references: [id])
+  category    Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 }

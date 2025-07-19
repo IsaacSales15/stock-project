@@ -1,6 +1,6 @@
 <h1 class="mb-4">Gerenciar Inventários</h1>
 
-<!-- Formulário de criação -->
+<!-- Creation form -->
 <form action="/inventory" method="POST" class="mb-4">
   <div class="input-group">
     <input
@@ -14,7 +14,7 @@
   </div>
 </form>
 
-<!-- Lista de inventários -->
+<!-- Inventory list -->
 <table class="table table-striped">
   <thead>
     <tr>
@@ -42,7 +42,7 @@
             <button class="btn btn-warning btn-sm">Atualizar</button>
           </form>
 
-          <!-- Formulário de exclusão -->
+          <!-- Delete form -->
           <form
             action="/inventory?_method=DELETE"
             method="POST"
@@ -53,7 +53,7 @@
           </form>
         </td>
 
-        <!--  Exibição de produtos -->
+        <!--  Product display -->
         <td>
           <a
             href="/category/fromInventory/{{this.id}}"
