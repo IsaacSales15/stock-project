@@ -1,5 +1,12 @@
 import { Product } from "../../models/product";
 import { Request, Response } from "express";
+import {
+  ProductDeleteSchema,
+  ProductStoreSchema,
+  ProductUpdateSchema,
+} from "../../validators/product";
+import { RequestWithValidated } from "../../middlewares/validator";
+import { z } from "zod";
 
 export class ProductController {
   async index(req: Request, res: Response) {
@@ -7,32 +14,39 @@ export class ProductController {
     res.render("product/index", { products });
   }
 
-  async store(req: Request, res: Response) {
-    const { name, quantity, inventoryId } = req.body;
-    await Product.create(name, quantity, Number(inventoryId));
+  async store(
+    req: RequestWithValidated<z.infer<typeof ProductStoreSchema>>,
+    res: Response
+  ) {
+    const data = req.validatedData;
+    await Product.create(data.name, data.quantity, Number(data.inventoryId));
     res.redirect("/product");
   }
 
-  async show(req: Request, res: Response) {
-    const id = Number(req.params.id);
-    const product = await Product.find(id);
+  async show(
+    req: RequestWithValidated<z.infer<typeof ProductDeleteSchema>>,
+    res: Response
+  ) {
+    const data = req.validatedData;
+    const product = await Product.find(data.id);
     res.render("product/show", { product });
   }
 
-  async all(req: Request, res: Response) {
-    const products = await Product.all();
-    res.render("product/index", { products });
-  }
-
-  async delete(req: Request, res: Response) {
-    const id = Number(req.body.id);
-    await Product.delete(id);
+  async delete(
+    req: RequestWithValidated<z.infer<typeof ProductDeleteSchema>>,
+    res: Response
+  ) {
+    const data = req.validatedData;
+    await Product.delete(data.id);
     res.redirect("/product");
   }
 
-  async update(req: Request, res: Response) {
-    const { id, name } = req.body;
-    await Product.update(Number(id), name);
+  async update(
+    req: RequestWithValidated<z.infer<typeof ProductUpdateSchema>>,
+    res: Response
+  ) {
+    const data = req.validatedData;
+    await Product.update(Number(data.id), data.name);
     res.redirect("/product");
   }
 }
