@@ -2,9 +2,8 @@ import { z } from "zod";
 
 export const ProductStoreSchema = z.object({
     name: z.string().min(1).max(100, "Nome muito longo").nonempty("Nome obrigatório"),
-    price: z.preprocess((val) => Number(val), z.number().positive("Preço inválido")),
     category: z.coerce.number().positive("Categoria inválida"),
-    inventoryId: z.coerce.number().positive("Estoque inválido"),
+    inventoryId: z.preprocess((val) => Number(val), z.number().int().positive()),
     quantity: z.preprocess((val) => Number(val), z.number().positive("Quantidade inválida")),
 });
 

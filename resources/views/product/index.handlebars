@@ -1,0 +1,34 @@
+{{#if inventoryId}}
+  <a href="/product" class="btn btn-secondary mb-3">Ver todos os produtos</a>
+{{/if}}
+
+<form action="/product" method="POST">
+  {{#if inventoryId}}
+    <input type="hidden" name="inventoryId" value="{{inventoryId}}" />
+  {{/if}}
+
+  <div class="mb-3">
+    <label for="name" class="form-label">Nome do Produto</label>
+    <input type="text" name="name" class="form-control" required />
+  </div>
+
+  <div class="mb-3">
+    <label for="quantity" class="form-label">Quantidade</label>
+    <input type="number" name="quantity" class="form-control" required />
+  </div>
+
+  {{#if categories.length}}
+    <div class="mb-3">
+      <label for="category" class="form-label">Categoria</label>
+      <select name="category" class="form-select" required>
+        {{#each categories}}
+          <option value="{{this.id}}">{{this.name}}</option>
+        {{/each}}
+      </select>
+    </div>
+  {{else}}
+    <p class="text-muted">Nenhuma categoria disponível.</p>
+  {{/if}}
+
+  <button type="submit" class="btn btn-success">Criar Produto</button>
+</form>

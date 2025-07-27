@@ -30,4 +30,8 @@ export class Product {
   static async update(id: number, name: string) {
     return await this.repo.update({ where: { id }, data: { name } });
   }
+
+  static async findByInventory(inventoryId: number) {
+    return await this.repo.findMany({ where: { inventoryId } });
+  }
 }

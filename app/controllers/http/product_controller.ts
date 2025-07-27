@@ -1,4 +1,5 @@
 import { Product } from "../../models/product";
+import { Category } from "../../models/category";
 import { Request, Response } from "express";
 import {
   ProductDeleteSchema,
@@ -11,7 +12,8 @@ import { z } from "zod";
 export class ProductController {
   async index(req: Request, res: Response) {
     const products = await Product.all();
-    res.render("product/index", { products });
+    const categories = await Category.all();
+    res.render("product/index", { products, categories });
   }
 
   async store(
@@ -19,16 +21,17 @@ export class ProductController {
     res: Response
   ) {
     const data = req.validatedData;
-    await Product.create(data.name, data.quantity, Number(data.inventoryId));
+    await Product.create(
+      data.name,
+      Number(data.quantity),
+      Number(data.inventoryId)
+    );
     res.redirect("/product");
   }
 
-  async show(
-    req: RequestWithValidated<z.infer<typeof ProductDeleteSchema>>,
-    res: Response
-  ) {
-    const data = req.validatedData;
-    const product = await Product.find(data.id);
+  async show(req: Request, res: Response) {
+    const id = Number(req.params.id);
+    const product = await Product.find(id);
     res.render("product/show", { product });
   }
 
@@ -48,5 +51,12 @@ export class ProductController {
     const data = req.validatedData;
     await Product.update(Number(data.id), data.name);
     res.redirect("/product");
+  }
+
+  async fromInventory(req: Request, res: Response) {
+    const inventoryId = Number(req.params.inventoryId);
+    const products = await Product.findByInventory(inventoryId);
+    const categories = await Category.findByInventory(inventoryId);
+    res.render("product/index", { products, categories, inventoryId });
   }
 }

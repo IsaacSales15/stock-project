@@ -1,14 +1,37 @@
 import { ProductController } from "../app/controllers/http";
 import { Router } from "express";
+import {
+  ProductDeleteSchema,
+  ProductStoreSchema,
+  ProductUpdateSchema,
+} from "../app/validators/product";
+import { RequestWithValidated } from "../app/middlewares/validator";
+import { z } from "zod";
+import { validate } from "../app/middlewares/validator";
 
 const router = Router();
 const productController = new ProductController();
 
-router.get('/', productController.index);
-router.get('/:id', productController.show);
-router.post('/', productController.store);
-router.get('/all', productController.all);            
-router.delete('/', productController.delete);          
-router.put('/', productController.update);           
+router.get("/", productController.index);
+router.get("/:id", productController.show);
+router.get("/fromInventory/:inventoryId", productController.fromInventory);
+router.post("/", validate(ProductStoreSchema, "body"), (req, res) =>
+  productController.store(
+    req as RequestWithValidated<z.infer<typeof ProductStoreSchema>>,
+    res
+  )
+);
+router.delete("/", validate(ProductDeleteSchema, "body"), (req, res) =>
+  productController.delete(
+    req as RequestWithValidated<z.infer<typeof ProductDeleteSchema>>,
+    res
+  )
+);
+router.put("/", validate(ProductUpdateSchema, "body"), (req, res) =>
+  productController.update(
+    req as RequestWithValidated<z.infer<typeof ProductUpdateSchema>>,
+    res
+  )
+);
 
 export default router;
