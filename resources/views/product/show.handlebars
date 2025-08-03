@@ -2,21 +2,52 @@
 
 <a href="/category/fromInventory/{{category.inventoryId}}" class="btn btn-secondary mb-3">← Voltar para Categorias</a>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nome</th>
-      <th>Quantidade</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each products}}
-      <tr>
-        <td>{{this.id}}</td>
-        <td>{{this.name}}</td>
-        <td>{{this.quantity}}</td>
-      </tr>
-    {{/each}}
-  </tbody>
-</table>
+<!-- Formulário para adicionar produto -->
+<div class="card mb-4 p-4">
+  <h5 class="mb-3">Adicionar novo produto</h5>
+  <form action="/product" method="POST">
+    <input type="hidden" name="category" value="{{category.id}}" />
+    <input type="hidden" name="inventoryId" value="{{category.inventoryId}}" />
+
+    <div class="mb-3">
+      <label for="name" class="form-label">Nome do Produto</label>
+      <input type="text" name="name" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="quantity" class="form-label">Quantidade</label>
+      <input type="number" name="quantity" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-success">Criar Produto</button>
+  </form>
+</div>
+
+<!-- Lista de produtos existentes -->
+<div class="row">
+  {{#each products}}
+    <div class="col-md-6 col-lg-4">
+      <div class="card">
+        <div class="card-body inventory-card">
+          <div>
+            <h5 class="card-title">{{this.name}}</h5>
+            <p>ID: {{this.id}}</p>
+            <p>Quantidade: {{this.quantity}}</p>
+          </div>
+          <div class="quantity-control">
+            <form action="/product/updateQuantity" method="POST">
+              <input type="hidden" name="id" value="{{this.id}}" />
+              <input type="hidden" name="action" value="increase" />
+              <button class="btn btn-success btn-sm">+</button>
+            </form>
+            <form action="/product/updateQuantity" method="POST">
+              <input type="hidden" name="id" value="{{this.id}}" />
+              <input type="hidden" name="action" value="decrease" />
+              <button class="btn btn-danger btn-sm">−</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  {{/each}}
+</div>

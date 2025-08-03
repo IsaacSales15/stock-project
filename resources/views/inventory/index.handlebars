@@ -1,69 +1,29 @@
-<h1 class="mb-4">Gerenciar Inventários</h1>
+<h1 class="mb-4">Seus Inventários</h1>
 
-<!-- Creation form -->
-<form action="/inventory" method="POST" class="mb-4">
-  <div class="input-group">
-    <input
-      type="text"
-      name="name"
-      placeholder="Nome do inventário"
-      class="form-control"
-      required
-    />
-    <button type="submit" class="btn btn-primary">Adicionar</button>
-  </div>
-</form>
+<a href="/inventory/new" class="btn btn-primary mb-4">+ Novo Inventário</a>
 
-<!-- Inventory list -->
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nome</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each inventories}}
-      <tr>
-        <td>{{this.id}}</td>
-        <td>{{this.name}}</td>
-        <td>
-          <!-- Formulário de edição -->
-          <form action="/inventory?_method=PUT" method="POST" class="d-inline">
+<div class="row g-4">
+  {{#each inventories}}
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <div>
+            <h5 class="card-title">{{this.name}}</h5>
+            <a href="/category/fromInventory/{{this.id}}" class="btn btn-outline-primary btn-sm w-100 mb-3">Ver categorias</a>
+          </div>
+
+          <form action="/inventory?_method=PUT" method="POST" class="mb-2">
             <input type="hidden" name="id" value="{{this.id}}" />
-            <input
-              type="text"
-              name="name"
-              value="{{this.name}}"
-              class="form-control d-inline w-50"
-              required
-            />
-            <button class="btn btn-warning btn-sm">Atualizar</button>
+            <input type="text" name="name" value="{{this.name}}" class="form-control form-control-sm mb-2" required />
+            <button class="btn btn-outline-warning btn-sm w-100">Atualizar</button>
           </form>
 
-          <!-- Delete form -->
-          <form
-            action="/inventory?_method=DELETE"
-            method="POST"
-            class="d-inline"
-          >
+          <form action="/inventory?_method=DELETE" method="POST">
             <input type="hidden" name="id" value="{{this.id}}" />
-            <button class="btn btn-danger btn-sm">Excluir</button>
+            <button class="btn btn-outline-danger btn-sm w-100">Excluir</button>
           </form>
-        </td>
-
-        <!--  Product display -->
-        <td>
-          <a
-            href="/category/fromInventory/{{this.id}}"
-            class="btn btn-outline-primary btn-sm"
-          >
-            Ver categorias
-          </a>
-        </td>
-
-      </tr>
-    {{/each}}
-  </tbody>
-</table>
+        </div>
+      </div>
+    </div>
+  {{/each}}
+</div>

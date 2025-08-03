@@ -1,68 +1,45 @@
 <h1 class="mb-4">Todas as Categorias</h1>
 
-<a href="/inventory" class="btn btn-secondary mb-3">← Voltar aos Inventários</a>
+<a href="/inventory" class="btn btn-outline-dark mb-3">← Voltar aos Inventários</a>
 
-<!-- Form to add new category (only if inventoryId is set) -->
 {{#if inventoryId}}
-  <form action="/category" method="POST" class="mb-4">
+  <form action="/category" method="POST" class="card p-3 mb-4">
     <input type="hidden" name="inventory" value="{{inventoryId}}" />
-    <div class="input-group">
-      <input
-        type="text"
-        name="name"
-        placeholder="Nome da categoria"
-        class="form-control"
-        required
-      />
-      <button type="submit" class="btn btn-primary">Adicionar</button>
+    <div class="mb-3">
+      <label for="name" class="form-label">Nome da Categoria</label>
+      <input type="text" name="name" placeholder="Nome da categoria" class="form-control" required />
     </div>
+    <button type="submit" class="btn btn-dark">Adicionar Categoria</button>
   </form>
 {{/if}}
 
-<!-- Category List -->
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nome</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each categories}}
-      <tr>
-        <td>{{this.id}}</td>
-        <td>
-          <a
-            href="/category/{{this.id}}"
-            class="text-decoration-none"
-          >{{this.name}}</a>
-        </td>
-        <td>
-          <!-- Update -->
-          <form action="/category?_method=PUT" method="POST" class="d-inline">
+<div class="row">
+  {{#each categories}}
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{this.name}}</h5>
+          <p class="text-muted">ID: {{this.id}}</p>
+
+          <!-- Detalhes -->
+          <a href="/category/{{this.id}}" class="btn btn-outline-dark btn-sm mb-2">Detalhes</a>
+
+          <!-- Atualizar -->
+          <form action="/category?_method=PUT" method="POST" class="mb-2">
             <input type="hidden" name="id" value="{{this.id}}" />
-            <input
-              type="text"
-              name="name"
-              value="{{this.name}}"
-              class="form-control d-inline w-50"
-              required
-            />
-            <button class="btn btn-warning btn-sm">Atualizar</button>
+            <div class="mb-2">
+              <input type="text" name="name" value="{{this.name}}" class="form-control form-control-sm" required />
+            </div>
+            <button class="btn btn-outline-warning btn-sm w-100">Atualizar</button>
           </form>
 
-          <!-- Delete -->
-          <form
-            action="/category?_method=DELETE"
-            method="POST"
-            class="d-inline"
-          >
+          <!-- Excluir -->
+          <form action="/category?_method=DELETE" method="POST">
             <input type="hidden" name="id" value="{{this.id}}" />
-            <button class="btn btn-danger btn-sm">Excluir</button>
+            <button class="btn btn-outline-danger btn-sm w-100">Excluir</button>
           </form>
-        </td>
-      </tr>
-    {{/each}}
-  </tbody>
-</table>
+        </div>
+      </div>
+    </div>
+  {{/each}}
+</div>

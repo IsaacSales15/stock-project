@@ -2,7 +2,7 @@
   <a href="/product" class="btn btn-secondary mb-3">Ver todos os produtos</a>
 {{/if}}
 
-<form action="/product" method="POST">
+<form action="/product" method="POST" class="card p-4 mb-4">
   {{#if inventoryId}}
     <input type="hidden" name="inventoryId" value="{{inventoryId}}" />
   {{/if}}
