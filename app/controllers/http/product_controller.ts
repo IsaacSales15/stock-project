@@ -5,6 +5,7 @@ import {
   ProductDeleteSchema,
   ProductStoreSchema,
   ProductUpdateSchema,
+  ProductFromCategorySchema,
 } from "../../validators/product";
 import { RequestWithValidated } from "../../middlewares/validator";
 import { z } from "zod";
@@ -20,12 +21,16 @@ export class ProductController {
     req: RequestWithValidated<z.infer<typeof ProductStoreSchema>>,
     res: Response
   ) {
-    const data = req.validatedData;
-    await Product.create(
-      data.name,
-      Number(data.quantity),
-      Number(data.inventoryId)
-    );
+    const { name, quantity, category } = req.validatedData;
+
+    const inventoryId = await Category.getInventoryId(category);
+    if (!inventoryId) {
+      return res
+        .status(400)
+        .send("Categoria inválida ou não vinculada a um inventário");
+    }
+
+    await Product.create(name, Number(quantity), Number(category), inventoryId);
     res.redirect("/product");
   }
 
@@ -58,5 +63,17 @@ export class ProductController {
     const products = await Product.findByInventory(inventoryId);
     const categories = await Category.findByInventory(inventoryId);
     res.render("product/index", { products, categories, inventoryId });
+  }
+
+  async fromCategory(
+    req: RequestWithValidated<z.infer<typeof ProductFromCategorySchema>>,
+    res: Response
+  ) {
+    const { categoryId } = req.validatedData;
+
+    const products = await Product.findByCategory(categoryId);
+    const category = await Category.find(categoryId);
+
+    res.render("product/show", { products, category });
   }
 }

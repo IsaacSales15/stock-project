@@ -1,0 +1,22 @@
+<h1 class="mb-4">Produtos da Categoria: {{category.name}}</h1>
+
+<a href="/category/fromInventory/{{category.inventoryId}}" class="btn btn-secondary mb-3">← Voltar para Categorias</a>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Quantidade</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each products}}
+      <tr>
+        <td>{{this.id}}</td>
+        <td>{{this.name}}</td>
+        <td>{{this.quantity}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

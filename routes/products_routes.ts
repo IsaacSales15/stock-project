@@ -4,6 +4,7 @@ import {
   ProductDeleteSchema,
   ProductStoreSchema,
   ProductUpdateSchema,
+  ProductFromCategorySchema,
 } from "../app/validators/product";
 import { RequestWithValidated } from "../app/middlewares/validator";
 import { z } from "zod";
@@ -13,10 +14,19 @@ const router = Router();
 const productController = new ProductController();
 
 router.get("/", productController.index);
-router.get("/:id", productController.show);
 router.get("/fromInventory/:inventoryId", productController.fromInventory);
+router.get(
+  "/fromCategory/:categoryId",
+  validate(ProductFromCategorySchema, "params"),
+  (req, res) =>
+    void productController.fromCategory(
+      req as RequestWithValidated<z.infer<typeof ProductFromCategorySchema>>,
+      res
+    )
+);
+router.get("/:id", productController.show);
 router.post("/", validate(ProductStoreSchema, "body"), (req, res) =>
-  productController.store(
+  void productController.store(
     req as RequestWithValidated<z.infer<typeof ProductStoreSchema>>,
     res
   )

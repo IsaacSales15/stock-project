@@ -1,12 +1,12 @@
 import { prisma } from "../utils/prisma";
 
 export class Category {
-/**
- * A repository for category operations.
- * @remarks
- * This property returns a reference to the underlying Prisma `category` model.
- * @returns A reference to the `category` model.
- */
+  /**
+   * A repository for category operations.
+   * @remarks
+   * This property returns a reference to the underlying Prisma `category` model.
+   * @returns A reference to the `category` model.
+   */
 
   private static get repo() {
     return prisma.category;
@@ -43,5 +43,13 @@ export class Category {
 
   static async findByInventory(inventoryId: number) {
     return await this.repo.findMany({ where: { inventoryId } });
+  }
+
+  static async getInventoryId(categoryId: number): Promise<number | null> {
+    const category = await this.repo.findUnique({
+      where: { id: categoryId },
+      select: { inventoryId: true },
+    });
+    return category ? category.inventoryId : null;
   }
 }

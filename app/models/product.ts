@@ -19,8 +19,8 @@ export class Product {
     return await this.repo.findUnique({ where: { id } });
   }
 
-  static async create(name: string, quantity: number, inventoryId: number) {
-    return await this.repo.create({ data: { name, quantity, inventoryId } });
+  static async create(name: string, quantity: number, categoryId: number, inventoryId: number) {
+    return await this.repo.create({ data: { name, quantity, categoryId, inventoryId } });
   }
 
   static async delete(id: number) {
@@ -33,5 +33,9 @@ export class Product {
 
   static async findByInventory(inventoryId: number) {
     return await this.repo.findMany({ where: { inventoryId } });
+  }
+  
+  static async findByCategory(categoryId: number) {
+    return await this.repo.findMany({ where: { categoryId } });
   }
 }
