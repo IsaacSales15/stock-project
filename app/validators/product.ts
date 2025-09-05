@@ -14,10 +14,10 @@ export const ProductStoreSchema = z.object({
 
 export const ProductUpdateSchema = z.object({
   id: z.coerce.number().positive("ID inválido"),
-  name: z.string().max(100, "Nome muito longo").nonempty("Nome obrigatório"),
-  price: z.preprocess(
+  name: z.string().max(100, "Nome muito longo").optional(),
+  quantity: z.preprocess(
     (val) => Number(val),
-    z.number().positive("Preço inválido")
+    z.number().positive("Quantidade inválida").optional()
   ),
 });
 

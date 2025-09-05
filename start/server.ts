@@ -15,7 +15,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(methodOverride('_method'))
 
-app.engine('handlebars', engine());
+app.engine('handlebars', engine({
+  helpers: {
+      inc: (value: number) => value + 1,
+      dec: (value: number) => Math.max(value - 1, 0),
+    },
+  }
+));
 app.set('view engine', 'handlebars');
 app.set('views', path.resolve(__dirname, '..', 'resources', 'views'));
 

@@ -21,8 +21,8 @@
           <h5 class="card-title">{{this.name}}</h5>
           <p class="text-muted">ID: {{this.id}}</p>
 
-          <!-- Detalhes -->
-          <a href="/category/{{this.id}}" class="btn btn-outline-dark btn-sm mb-2">Detalhes</a>
+          <!-- Produtos -->
+          <a href="/product/fromCategory/{{this.id}}" class="btn btn-outline-dark btn-sm mb-2">Produtos</a>
 
           <!-- Atualizar -->
           <form action="/category?_method=PUT" method="POST" class="mb-2">

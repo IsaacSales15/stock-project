@@ -27,8 +27,8 @@ export class Product {
     return await this.repo.delete({ where: { id } });
   }
 
-  static async update(id: number, name: string) {
-    return await this.repo.update({ where: { id }, data: { name } });
+  static async update(id: number, name: string, quantity: number) {
+    return await this.repo.update({ where: { id }, data: { name, quantity } });
   }
 
   static async findByInventory(inventoryId: number) {

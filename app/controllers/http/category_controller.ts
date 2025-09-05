@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Category } from "../../models/category";
+import { Inventory } from "../../models/inventory";
 import { RequestWithValidated } from "../../middlewares/validator";
 import {
   CategoryStoreSchema,
@@ -61,6 +62,11 @@ export class CategoryController {
   ) {
     const { inventoryId } = req.validatedData;
     const categories = await Category.findByInventory(inventoryId);
-    res.render("category/from_inventory", { categories, inventoryId });
+    const inventory = await Inventory.find(Number(inventoryId));
+    res.render("category/from_inventory", {
+      categories,
+      inventoryId,
+      inventoryName: inventory?.name || "Inventário Desconhecido",
+    });
   }
 }

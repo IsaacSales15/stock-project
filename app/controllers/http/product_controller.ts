@@ -54,8 +54,18 @@ export class ProductController {
     res: Response
   ) {
     const data = req.validatedData;
-    await Product.update(Number(data.id), data.name);
-    res.redirect("/product");
+    const product = await Product.find(data.id);
+    if (!product) {
+      res.status(404).send("Product not found");
+      return;
+    }
+
+    await Product.update(
+      data.id,
+      data.name ?? product.name,
+      data.quantity ?? product.quantity
+    );
+    res.redirect(`/product/fromCategory/${product.categoryId}`);
   }
 
   async fromInventory(req: Request, res: Response) {
