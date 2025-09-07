@@ -43,5 +43,6 @@ router.put("/", validate(ProductUpdateSchema, "body"), (req, res) =>
     res
   )
 );
+router.get("/all", (req, res) => productController.all(req, res));
 
 export default router;

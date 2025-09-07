@@ -11,6 +11,7 @@
   <form action="/product" method="POST">
     <input type="hidden" name="category" value="{{category.id}}" />
     <input type="hidden" name="inventoryId" value="{{category.inventoryId}}" />
+    <input type="hidden" name="redirectTo" value="/product/fromCategory/{{category.id}}" />
 
     <div class="mb-3">
       <label for="name" class="form-label">Nome do Produto</label>

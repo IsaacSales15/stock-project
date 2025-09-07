@@ -38,4 +38,14 @@ export class Product {
   static async findByCategory(categoryId: number) {
     return await this.repo.findMany({ where: { categoryId } });
   }
+
+  static async allRelations() {
+    return await this.repo.findMany({
+      include: {
+        category: true,
+        inventory: true,
+      },
+      orderBy: { id: "asc" },
+    });
+  }
 }

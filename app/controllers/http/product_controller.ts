@@ -21,7 +21,7 @@ export class ProductController {
     req: RequestWithValidated<z.infer<typeof ProductStoreSchema>>,
     res: Response
   ) {
-    const { name, quantity, category } = req.validatedData;
+    const { name, quantity, category, redirectTo } = req.validatedData;
 
     const inventoryId = await Category.getInventoryId(category);
     if (!inventoryId) {
@@ -31,7 +31,7 @@ export class ProductController {
     }
 
     await Product.create(name, Number(quantity), Number(category), inventoryId);
-    res.redirect("/product");
+    return res.redirect(redirectTo || "/product");
   }
 
   async show(req: Request, res: Response) {
@@ -66,6 +66,24 @@ export class ProductController {
       data.quantity ?? product.quantity
     );
     res.redirect(`/product/fromCategory/${product.categoryId}`);
+  }
+
+  async all(req: Request, res: Response) {
+    const products = await Product.allRelations();
+    const categories = await Category.all();
+
+    const grouped = products.reduce((acc: any, product) => {
+      const invId = product.inventory?.id ?? "sem_inventario";
+      const group = acc.find((g: any) => g.inventory?.id === invId);
+      if (group) {
+        group.products.push(product);
+      } else {
+        acc.push({ inventory: product.inventory, products: [product] });
+      }
+      return acc;
+    }, []);
+
+    res.render("product/index", { groupedProducts: grouped, categories });
   }
 
   async fromInventory(req: Request, res: Response) {

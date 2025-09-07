@@ -10,6 +10,7 @@ export const ProductStoreSchema = z.object({
     )
     .optional(),
   category: z.preprocess((val) => Number(val), z.number().int().positive()),
+  redirectTo: z.string().optional(),
 });
 
 export const ProductUpdateSchema = z.object({
