@@ -2,6 +2,7 @@ import { Express } from "express";
 import inventory_routes from "./inventory_routes";
 import product_routes from "./products_routes";
 import category_routes from "./category_routes";
+import report_routes from "./report_routes";
 import { InventoryController } from "../app/controllers/http";
 
 export default function routes(app: Express){
@@ -13,4 +14,5 @@ export default function routes(app: Express){
     app.use('/inventory', inventory_routes);
     app.use('/product', product_routes);
     app.use('/category', category_routes);
+    app.use('/report', report_routes);
 }
