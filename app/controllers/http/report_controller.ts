@@ -1,7 +1,6 @@
 import ExcelJS from "exceljs";
 import { Request, Response } from "express";
-import { Product } from "../../models/product.js";
-import { Inventory } from "../../models/inventory.js";
+import { Inventory } from "../../models/inventory";
 
 export class ReportController {
   async excel(res: Response, req: Request) {
@@ -30,13 +29,12 @@ export class ReportController {
       }
     }
 
+    const buffer = await workbook.xlsx.writeBuffer();
     res.setHeader("Content-Disposition", "attachment; filename=relatorio.xlsx");
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     );
-
-    await workbook.xlsx.write(res);
-    res.end();
+    res.send(buffer);
   }
 }
