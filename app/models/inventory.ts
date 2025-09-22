@@ -24,6 +24,19 @@ export class Inventory {
     return await this.repo.delete({ where: { id } });
   }
   static async update(id: number, name: string) {
-    return await this.repo.update({ where: { id: Number(id) }, data: { name } });
+    return await this.repo.update({
+      where: { id: Number(id) },
+      data: { name },
+    });
+  }
+
+  static async allWithRelations() {
+    return await this.repo.findMany({
+      include: {
+        categories: {
+          include: { products: true },
+        },
+      },
+    });
   }
 }

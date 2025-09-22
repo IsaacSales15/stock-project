@@ -14,7 +14,7 @@ export class ProductController {
   async index(req: Request, res: Response) {
     const products = await Product.all();
     const categories = await Category.all();
-    res.render("product/index", { products, categories });
+    res.render("product/show", { products, categories });
   }
 
   async store(

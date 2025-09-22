@@ -19,7 +19,7 @@ export class CategoryController {
   async show(req: Request, res: Response) {
     const id = Number(req.params.id);
     const category = await Category.find(id);
-    res.render("category/show", { category });
+    res.render("category/show", { category});
   }
 
   async store(
