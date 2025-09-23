@@ -1,0 +1,69 @@
+<div class="card shadow-sm">
+  <div class="card-header bg-dark text-white">
+    <i class="bi bi-file-earmark-spreadsheet"></i> Relatórios
+  </div>
+  <div class="card-body">
+    <p>Escolha o tipo de relatório que deseja exportar:</p>
+
+    <form id="reportForm">
+      <div class="form-check mb-2">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="reportType"
+          id="excelOption"
+          value="excel"
+        >
+        <label class="form-check-label" for="excelOption">
+          Excel (.xlsx)
+        </label>
+      </div>
+
+      <div class="form-check mb-4">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="reportType"
+          id="pdfOption"
+          value="pdf"
+        >
+        <label class="form-check-label" for="pdfOption">
+          PDF (.pdf)
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-success" disabled id="exportBtn">
+        Exportar
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const exportBtn = document.getElementById("exportBtn");
+    const radios = document.querySelectorAll("input[name='reportType']");
+    const form = document.getElementById("reportForm");
+
+    // Habilita o botão Exportar quando selecionar uma opção
+    radios.forEach(radio => {
+      radio.addEventListener("change", () => {
+        exportBtn.disabled = false;
+      });
+    });
+
+    // Submissão do formulário
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const selected = document.querySelector("input[name='reportType']:checked").value;
+
+      if (selected === "excel") {
+        window.location.href = "/report/excel";
+      } else if (selected === "pdf") {
+        window.location.href = "/report/pdf";
+      } else {
+        alert("Selecione um tipo de relatório válido.");
+      }
+    });
+  });
+</script>

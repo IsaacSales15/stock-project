@@ -2,9 +2,9 @@
 
 <a href="/inventory" class="btn btn-outline-dark mb-3">← Voltar aos Inventários</a>
 
-{{#if inventoryId}}
+{{#if this.inventoryId}}
   <form action="/category" method="POST" class="card p-3 mb-4">
-    <input type="hidden" name="inventory" value="{{inventoryId}}" />
+    <input type="hidden" name="inventory" value="{{this.inventoryId}}" />
     <div class="mb-3">
       <label for="name" class="form-label">Nome da Categoria</label>
       <input type="text" name="name" placeholder="Nome da categoria" class="form-control" required />
@@ -20,7 +20,7 @@
         <div class="card-body d-flex flex-column">
           <h5 class="card-title">{{this.name}}</h5>
           <p class="text-muted">ID: {{this.id}}</p>
-          <p class="text-muted">Inventário: {{inventoryName}}</p>
+          <p class="text-muted">Inventário: {{this.inventoryName}}</p>
 
           <!-- Produtos -->
           <a href="/product/fromCategory/{{this.id}}" class="btn btn-outline-dark btn-sm mb-2">Produtos</a>
