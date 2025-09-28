@@ -20,6 +20,10 @@ export class Category {
     return await this.repo.findUnique({ where: { id } });
   }
 
+  static async findByName(name: string) {
+    return await this.repo.findFirst({ where: { name } });
+  }
+
   static async create(name: string, inventoryId: number) {
     return await this.repo.create({
       data: {

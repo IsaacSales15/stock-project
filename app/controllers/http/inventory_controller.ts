@@ -26,7 +26,7 @@ export class InventoryController {
   async show(req: Request, res: Response) {
     const id = Number(req.params.id);
     const inventory = await Inventory.find(id);
-    res.render("inventory/show", { inventory });
+    res.render("inventory/index", { inventory });
   }
 
   async delete(

@@ -1,0 +1,45 @@
+<h3>Resultados da busca por "{{query}}"</h3>
+
+{{#if inventories.length}}
+  <h4>Inventários</h4>
+  <ul class="list-group mb-3">
+    {{#each inventories}}
+      <li class="list-group-item">
+        📦 {{this.name}}
+        <a href="/product/fromInventory/{{this.id}}" class="btn btn-sm btn-primary float-end">Ver</a>
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if categories.length}}
+  <h4>Categorias</h4>
+  <ul class="list-group mb-3">
+    {{#each categories}}
+      <li class="list-group-item">
+        🗂️ {{this.name}}
+        <a href="/product/fromCategory/{{this.id}}" class="btn btn-sm btn-primary float-end">Ver</a>
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if products.length}}
+  <h4>Produtos</h4>
+  <ul class="list-group mb-3">
+    {{#each products}}
+      <li class="list-group-item">
+        🛒 {{this.name}} (Qtd: {{this.quantity}})
+        <a href="/product/fromCategory/{{this.categoryId}}" class="btn btn-sm btn-primary float-end">Ver</a>
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#unless inventories.length}}
+  {{#unless categories.length}}
+    {{#unless products.length}}
+      <p>Nenhum resultado encontrado.</p>
+    {{/unless}}
+  {{/unless}}
+{{/unless}}

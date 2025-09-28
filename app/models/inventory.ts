@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { prisma } from "../utils/prisma";
 
 export class Inventory {
@@ -16,6 +17,9 @@ export class Inventory {
   }
   static async find(id: number) {
     return await this.repo.findUnique({ where: { id } });
+  }
+  static async findByName({ name }: { name: string }) : Promise<Inventory[]> {
+    return await this.repo.findMany({ where: { name } });
   }
   static async create(name: string) {
     return await this.repo.create({ data: { name } });
