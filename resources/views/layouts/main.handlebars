@@ -3,6 +3,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="public/css/index.css" />
+    <link 
+      rel="icon" 
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2215%22 ry=%2215%22 fill=%22%230d6efd%22/><text x=%2250%22 y=%2270%22 font-size=%2270%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22Arial%22>K</text></svg>" 
+      type="image/svg+xml" 
+    />
+
     <title>Kaution - Gerenciamento de Estoque</title>
 
     <link
@@ -11,15 +17,159 @@
     />
 
     <style>
-      body { padding-top: 70px; }
+      /* ========= VARIÁVEIS DE TEMA ========= */
+      :root {
+        --bg-color: #f8f9fa;
+        --text-color: #212529;
+        --card-bg: #ffffff;
+        --card-title: #212529;
+        --navbar-bg: linear-gradient(90deg, #212529, #343a40);
+        --footer-bg: #212529;
+        --footer-text: #bbb;
+      }
+
+      [data-theme="dark"] {
+        --bg-color: #181a1b;
+        --text-color: #e4e6eb;
+        --card-bg: #242526;
+        --card-title: #f8f9fa;
+        --navbar-bg: linear-gradient(90deg, #111, #222);
+        --footer-bg: #111;
+        --footer-text: #888;
+      }
+
+      /* Forçar cards, headers e listas a respeitar o tema */
+.card, .card-header, .list-group-item {
+  background-color: var(--card) !important;
+  color: var(--text) !important;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Inputs e selects no tema escuro */
+.form-control, .form-select {
+  background-color: var(--card);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.form-control::placeholder {
+  color: rgba(200, 200, 200, 0.7);
+}
+
+.form-control:focus, .form-select:focus {
+  background-color: var(--card);
+  color: var(--text);
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Corrigir .text-muted no dark mode */
+[data-theme="dark"] .text-muted {
+  color: #aaa !important;
+}
+
+
+      body {
+        padding-top: 70px;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background 0.3s ease, color 0.3s ease;
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Navbar */
+      .navbar {
+        background: var(--navbar-bg);
+        transition: background 0.3s ease;
+      }
+
+      .navbar-brand {
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+
+      .navbar-nav .nav-link {
+        transition: color 0.3s ease;
+      }
+
+      .navbar-nav .nav-link:hover {
+        color: #0d6efd !important;
+      }
+
+      /* Botão de tema */
+      .theme-toggle {
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 1.3rem;
+        cursor: pointer;
+        margin-left: 1rem;
+        transition: transform 0.2s ease;
+      }
+
+      .theme-toggle:hover {
+        transform: scale(1.2);
+      }
+
+      /* Cards */
+      .card {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1); /* borda visível no dark mode */
+  background-color: var(--card);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Botões gradient adaptados ao dark mode */
+.btn-gradient {
+  background: linear-gradient(90deg, #0d6efd, #6610f2);
+  color: #fff;
+  border: 1px solid #0d6efd;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+[data-theme="dark"] .btn-gradient {
+  background: linear-gradient(90deg, #0d6efd, #6610f2);
+  color: #fff;
+  border: 1px solid #0d6efd;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  filter: brightness(1.1);
+}
+
+/* Inputs, selects e text-muted */
+.form-control, .form-select {
+  background-color: var(--card);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.form-control::placeholder {
+  color: rgba(200, 200, 200, 0.7);
+}
+
+.text-muted {
+  color: #6c757d;
+}
+
+[data-theme="dark"] .text-muted {
+  color: #aaa !important;
+}
     </style>
   </head>
   <body>
-
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">Kaution</a>
+        <a class="navbar-brand" href="/">⚡ Kaution</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -31,17 +181,12 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" href="/inventory">Inventários</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/category">Categorias</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/report">Relatório</a>
-            </li>
+            <li class="nav-item"><a class="nav-link" href="/inventory">Inventários</a></li>
+            <li class="nav-item"><a class="nav-link" href="/category">Categorias</a></li>
+            <li class="nav-item"><a class="nav-link" href="/report">Relatório</a></li>
           </ul>
         </div>
+
         <form class="d-flex" role="search" action="/search" method="get">
           <input
             class="form-control me-2"
@@ -52,6 +197,11 @@
           />
           <button class="btn btn-outline-light" type="submit">Buscar</button>
         </form>
+
+        <!-- Botão Dark/Light -->
+        <button id="themeToggle" class="theme-toggle" title="Alternar tema">
+          🌙
+        </button>
       </div>
     </nav>
 
@@ -60,9 +210,21 @@
       {{{body}}}
     </main>
 
-    <!-- Bootstrap Script -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    ></script>
+    <!-- Bootstrap + Script Tema -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const themeToggle = document.getElementById("themeToggle");
+      const currentTheme = localStorage.getItem("theme") || "light";
+      document.documentElement.setAttribute("data-theme", currentTheme);
+      themeToggle.textContent = currentTheme === "dark" ? "☀️" : "🌙";
+
+      themeToggle.addEventListener("click", () => {
+        let theme = document.documentElement.getAttribute("data-theme");
+        let newTheme = theme === "light" ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+        themeToggle.textContent = newTheme === "dark" ? "☀️" : "🌙";
+      });
+    </script>
   </body>
 </html>

@@ -10,7 +10,7 @@ export default function routes(app: Express){
 
     const inventoryController = new InventoryController();
 
-    app.get('/', (req, res) => inventoryController.index(req, res));
+    app.get('/', (req, res) => inventoryController.home(req, res));
 
     app.use('/inventory', inventory_routes);
     app.use('/product', product_routes);

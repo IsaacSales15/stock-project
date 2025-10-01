@@ -9,6 +9,10 @@ import { z } from "zod";
 import { RequestWithValidated } from "../../middlewares/validator";
 
 export class InventoryController {
+  async home(req: Request, res: Response) {
+    res.render("home/index");
+  }
+
   async index(req: Request, res: Response) {
     const inventories = await Inventory.all();
     res.render("inventory/index", { inventories });

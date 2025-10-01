@@ -1,10 +1,10 @@
-{{!-- Botão para voltar a ver todos os produtos se estiver em um inventário específico --}}
+<h1 class="mb-4 text-center">🛒 Produtos</h1>
+
 {{#if inventoryId}}
-  <a href="/product/all" class="btn btn-secondary mb-3">Ver todos os produtos</a>
+  <a href="/product/all" class="btn btn-outline-primary mb-4">← Ver todos os produtos</a>
 {{/if}}
 
-{{!-- Formulário de criação de produto --}}
-<form action="/product" method="POST" class="card p-4 mb-4">
+<form action="/product" method="POST" class="card p-4 shadow-sm mb-5">
   {{#if inventoryId}}
     <input type="hidden" name="inventoryId" value="{{inventoryId}}" />
   {{/if}}
@@ -32,33 +32,30 @@
     <p class="text-muted">Nenhuma categoria disponível.</p>
   {{/if}}
 
-  <button type="submit" class="btn btn-success">Criar Produto</button>
+  <button type="submit" class="btn btn-gradient w-100">➕ Criar Produto</button>
 </form>
 
-<hr class="my-4"/>
-
-{{!-- Listagem de produtos agrupados por inventário --}}
 <h2 class="mb-4">Lista de Produtos</h2>
 
 {{#if groupedProducts}}
   {{#each groupedProducts}}
-    <div class="card mb-4 shadow">
-      <div class="card-header bg-light">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header fw-bold">
         Inventário: {{#if this.inventory}}{{this.inventory.name}}{{else}}Sem inventário{{/if}}
       </div>
       <ul class="list-group list-group-flush">
         {{#each this.products}}
-          <li class="list-group-item">
-            <strong>{{this.name}}</strong> (Qtd: {{this.quantity}})
-            <br />
-            Categoria: {{#if this.category}}{{this.category.name}}{{else}}Sem categoria{{/if}}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{this.name}}</strong> (Qtd: {{this.quantity}})
+              <br />
+              <small class="text-muted">Categoria: {{#if this.category}}{{this.category.name}}{{else}}Sem categoria{{/if}}</small>
+            </div>
           </li>
         {{/each}}
       </ul>
     </div>
   {{/each}}
-{{/if}}
-
-{{#unless groupedProducts}}
+{{else}}
   <p class="text-muted">Nenhum produto disponível.</p>
-{{/unless}}
+{{/if}}
