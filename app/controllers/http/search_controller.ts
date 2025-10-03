@@ -16,7 +16,7 @@ export class SearchController {
     }
 
     const products = await Product.findByName({ name: query });
-    const categories = await Category.findByName(query);
+    const categories = await Category.findByName({ name: query});
     const inventories = await Inventory.findByName({ name: query });
 
     res.render("search/index", { query, inventories, categories, products });
