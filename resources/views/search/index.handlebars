@@ -17,7 +17,7 @@
   <ul class="list-group mb-3">
     {{#each categories}}
       <li class="list-group-item">
-        🗂️ {{this.name}}
+        🗂️ {{this.name}} {{this.inventoryName}}
         <a href="/product/fromCategory/{{this.id}}" class="btn btn-sm btn-primary float-end">Ver</a>
       </li>
     {{/each}}

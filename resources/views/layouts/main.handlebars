@@ -38,23 +38,21 @@
         --footer-text: #888;
       }
 
-      /* Forçar cards, headers e listas a respeitar o tema */
-.card, .card-header, .list-group-item {
-  background-color: var(--card) !important;
-  color: var(--text) !important;
-  border-color: rgba(255, 255, 255, 0.1);
-}
+      .card, .card-header, .list-group-item {
+      background-color: var(--card) !important;
+      color: var(--text) !important;
+      border-color: rgba(255, 255, 255, 0.1);
+      }
 
-/* Inputs e selects no tema escuro */
-.form-control, .form-select {
-  background-color: var(--card);
-  color: var(--text);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
+      .form-control, .form-select {
+      background-color: var(--card);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      }
 
-.form-control::placeholder {
-  color: rgba(200, 200, 200, 0.7);
-}
+      .form-control::placeholder {
+      color: rgba(200, 200, 200, 0.7);
+      }
 
 .form-control:focus, .form-select:focus {
   background-color: var(--card);
@@ -69,7 +67,7 @@
 }
 
 
-      body {
+ body {
         padding-top: 70px;
         background-color: var(--bg-color);
         color: var(--text-color);
@@ -111,18 +109,29 @@
         transform: scale(1.2);
       }
 
-      /* Cards */
-      .card {
+/* Cards */
+ .card {
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1); /* borda visível no dark mode */
+  border: 1px solid rgba(0, 0, 0, 0.1); 
   background-color: var(--card);
   color: var(--text);
-  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, color 0.3s ease,
+              transform 0.2s ease, box-shadow 0.2s ease, border-color 0.3s ease;
+}
+
+[data-theme="dark"] .card {
+  border: 1px solid rgba(255, 255, 255, 0.15); 
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); 
 }
 
 .card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .card:hover {
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1); 
 }
 
 /* Botões gradient adaptados ao dark mode */
@@ -183,7 +192,7 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item"><a class="nav-link" href="/inventory">Inventários</a></li>
             <li class="nav-item"><a class="nav-link" href="/category">Categorias</a></li>
-            <li class="nav-item"><a class="nav-link" href="/report">Relatório</a></li>
+            <li class="nav-item"><a class="nav-link" href="/report">Relatórios</a></li>
           </ul>
         </div>
 

@@ -60,4 +60,12 @@ export class Product {
       orderBy: { id: "asc" },
     });
   }
+
+  static async getInventoryId(productid: number): Promise<number | null> {
+    const category = await this.repo.findUnique({
+      where: { id: productid },
+      select: { inventoryId: true },
+    });
+    return category ? category.inventoryId : null;
+  }
 }

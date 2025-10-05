@@ -7,6 +7,7 @@ import {
   CategoryUpdateSchema,
   CategoryDeleteSchema,
   CategoryFromInventorySchema,
+  CategoryAllSchema,
 } from "../../validators/category";
 import { z } from "zod";
 
@@ -34,26 +35,47 @@ export class CategoryController {
   }
 
   async update(
-    req: RequestWithValidated<z.infer<typeof CategoryUpdateSchema>>,
-    res: Response
-  ) {
-    const { id, name } = req.validatedData;
-    await Category.update(id, name);
-    res.redirect("/category");
+  req: RequestWithValidated<z.infer<typeof CategoryUpdateSchema>>,
+  res: Response
+) {
+  const { id, name } = req.validatedData;
+
+  await Category.update(id, name);
+
+  const inventoryId = await Category.getInventoryId(id);
+
+  if (inventoryId) {
+    return res.redirect(`/category/fromInventory/${inventoryId}`);
   }
 
+  return res.redirect("/category");
+}
   async delete(
-    req: RequestWithValidated<z.infer<typeof CategoryDeleteSchema>>,
-    res: Response
-  ) {
-    const { id } = req.validatedData;
-    await Category.delete(id);
-    res.redirect("/category");
+  req: RequestWithValidated<z.infer<typeof CategoryDeleteSchema>>,
+  res: Response
+) {
+  const { id } = req.validatedData;
+
+  const inventoryId = await Category.getInventoryId(Number(id));
+
+  await Category.delete(Number(id));
+
+  if (inventoryId) {
+    return res.redirect(`/category/fromInventory/${inventoryId}`);
   }
 
-  async all(req: Request, res: Response) {
+  return res.redirect("/category");
+}
+
+  async all(req: RequestWithValidated<z.infer<typeof CategoryAllSchema>>,
+    res: Response) {
     const categories = await Category.all();
-    res.render("category/index", { categories });
+    const categoriesWithInventory = categories.map((cat) => ({
+      ...cat,
+      inventoryName: cat.Inventory?.name || "Inventário Desconhecido",
+    }));
+
+    res.render("category/index", { categories: categoriesWithInventory });
   }
 
   async fromInventory(
@@ -62,9 +84,15 @@ export class CategoryController {
   ) {
     const { inventoryId } = req.validatedData;
     const categories = await Category.findByInventory(inventoryId);
-    const inventory = await Inventory.find(Number(inventoryId));
+    const inventory = await Inventory.find(inventoryId);
+
+    const categoriesWithInventory = categories.map((cat) => ({
+      ...cat,
+      inventoryName: cat.Inventory?.name || inventory?.name || "Desconhecido",
+    }));
+
     res.render("category/from_inventory", {
-      categories,
+      categories: categoriesWithInventory,
       inventoryId,
       inventoryName: inventory?.name || "Inventário Desconhecido",
     });

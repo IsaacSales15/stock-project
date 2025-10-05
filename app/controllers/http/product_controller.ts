@@ -45,8 +45,13 @@ export class ProductController {
     res: Response
   ) {
     const data = req.validatedData;
+    const product = await Product.find(data.id);
+    if (!product) {
+      res.status(404).send("Product not found");
+      return;
+    }
     await Product.delete(data.id);
-    res.redirect("/product");
+    res.redirect(`/product/fromCategory/${product.categoryId}`);
   }
 
   async update(
@@ -104,4 +109,5 @@ export class ProductController {
 
     res.render("product/show", { products, category });
   }
+
 }

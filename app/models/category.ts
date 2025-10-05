@@ -1,3 +1,4 @@
+import { includes } from "zod";
 import { prisma } from "../utils/prisma";
 
 export class Category {
@@ -13,7 +14,9 @@ export class Category {
   }
 
   static async all() {
-    return await this.repo.findMany();
+    return await this.repo.findMany(
+      { include: { Inventory: { select: { name: true } } } }
+    );
   }
 
   static async find(id: number) {
@@ -34,7 +37,7 @@ export class Category {
     });
   }
 
-  static async update(id: number, name: string) {
+  static async update(id: number, name: string ) {
     return await this.repo.update({
       where: { id },
       data: { name, updateAt: new Date() },
@@ -46,8 +49,15 @@ export class Category {
   }
 
   static async findByInventory(inventoryId: number) {
-    return await this.repo.findMany({ where: { inventoryId } });
-  }
+  return await this.repo.findMany({
+    where: { inventoryId },
+    include: {
+      Inventory: {
+        select: { name: true },
+      },
+    },
+  });
+}
 
   static async getInventoryId(categoryId: number): Promise<number | null> {
     const category = await this.repo.findUnique({
